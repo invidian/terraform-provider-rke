@@ -197,7 +197,12 @@ func setRKEClusterKeys(d *schema.ResourceData, apiURL, caCrt, clientCert, client
 	}
 	d.Set("rke_cluster_yaml", string(yamlRkeConfig)) // nolint
 
-	d.SetId(parsedURL.Hostname())
+	if parsedURL.Hostname() == "" {
+		d.SetId("static")
+	} else {
+		d.SetId(parsedURL.Hostname())
+	}
+
 	return nil
 }
 
